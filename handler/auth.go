@@ -5,10 +5,6 @@ import (
 	"net/http"
 )
 
-type OAuthAccessResponse struct {
-	AccessToken string `json:"access_token"`
-}
-
 func AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, service.AuthorizeURL(), http.StatusSeeOther)
 }

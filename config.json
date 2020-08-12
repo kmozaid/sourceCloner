@@ -1,0 +1,10 @@
+{
+  "ClientId": "21562168ca87f2e900ef",
+  "ClientSecret": "a07b152b655155f9878f212114d6901cf20c5f5a",
+  "RedirectUri": "http://localhost:8080/oauth/redirect",
+  "Scopes": [
+    "read:user",
+    "repo"
+  ],
+  "CloneDir": "/tmp"
+}

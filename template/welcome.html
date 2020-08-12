@@ -1,14 +1,9 @@
 <html>
 <head>
     <script>
-        let previousCloned = ''
         const query = window.location.search.substring(1)
         const token = query.split('access_token=')[1]
         function clone(repoURL, repoName) {
-            if(document.getElementById(previousCloned)) {
-                document.getElementById(previousCloned).innerText = ''
-            }
-            previousCloned = repoName
             document.getElementById(repoName).innerText = "Status: In Progress"
             fetch('/clone?access_token='+token+"&repoURL="+repoURL+"&repoName="+repoName)
                 // Parse the response as JSON
@@ -23,7 +18,7 @@
         <p style="text-align: center; margin-top: 100px">
             {{range .Repositories}}
                 <ul style="text-align: left; margin-left: 50px">
-                    <li>{{.Name}} <a onclick="clone({{.CloneUrl}}, {{.Name}})"> Clone</a> <strong id={{.Name}}></strong></li>
+                    <li>{{.Name}} <a style="text-transform: initial; text-decoration: blue" onclick="clone({{.CloneUrl}}, {{.Name}})"> Clone</a> <strong id={{.Name}}></strong></li>
                 </ul>
                 {{end}}
         </p>

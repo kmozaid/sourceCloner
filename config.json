@@ -6,5 +6,5 @@
     "read:user",
     "repo"
   ],
-  "CloneDir": "/tmp"
+  "CloneDir": "/tmp/git"
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	handlers "github.com/mozaidk/sourceCloner/handlers"
+	handlers "github.com/mozaidk/sourceCloner/handler"
 	"log"
 	"net/http"
 )

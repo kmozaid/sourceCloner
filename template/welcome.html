@@ -14,7 +14,7 @@
                 // Parse the response as JSON
                 .then(res => res.json())
                 .then(res => {
-                    document.getElementById(repoName).innerText = `Status: ${res.response}`
+                    document.getElementById(repoName).innerText = `Status: ${res.status}`
                 })
         }
     </script>

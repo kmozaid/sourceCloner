@@ -12,6 +12,7 @@ type Repository struct {
 }
 
 type RepositoryList struct {
+	AccessToken  string
 	Repositories []Repository
 }
 

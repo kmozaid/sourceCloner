@@ -12,7 +12,6 @@ import (
 	"golang.org/x/oauth2/github"
 	"net/http"
 	"os"
-	"strings"
 )
 
 var conf = &oauth2.Config{
@@ -36,21 +35,8 @@ func AccessToken(code string) string {
 }
 
 func GetRepositories(accessToken string) model.RepositoryList {
-	reqURL := fmt.Sprintf("https://%s@api.github.com/user", accessToken)
-	res, err := http.Get(reqURL)
-	if err != nil {
-		fmt.Fprintf(os.Stdout, "could not create HTTP request: %v", err)
-	}
-	defer res.Body.Close()
-
-	// Parse the request body into the `OAuthAccessResponse` struct
-	var user model.User
-	if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
-		fmt.Fprintf(os.Stdout, "could not parse JSON response: %v", err)
-	}
-
-	reposReqURL := strings.Replace(user.ReposUrl, "api.", accessToken+"@api.", 1)
-	res, err = http.Get(reposReqURL)
+	reposReqURL := fmt.Sprintf("https://api.github.com/user/repos?access_token=%s", accessToken)
+	res, err := http.Get(reposReqURL)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "could not create HTTP request: %v", err)
 	}
@@ -61,15 +47,14 @@ func GetRepositories(accessToken string) model.RepositoryList {
 	if err := json.NewDecoder(res.Body).Decode(&repos); err != nil {
 		fmt.Fprintf(os.Stdout, "could not parse JSON response: %v", err)
 	}
-	return model.RepositoryList{Repositories: repos}
+	return model.RepositoryList{AccessToken: accessToken, Repositories: repos}
 }
 
 func CloneRepository(url string, name string, dir string, token string) model.CloneResponse {
 	fmt.Printf("git clone %s %s \n", url, dir)
-
 	repo, err := git.PlainClone(dir, false, &git.CloneOptions{
 		Auth: &githttp.BasicAuth{
-			Username: "", // yes, this can be anything except an empty string
+			Username: "something", // yes, this can be anything except an empty string
 			Password: token,
 		},
 		URL:      url,
@@ -78,7 +63,7 @@ func CloneRepository(url string, name string, dir string, token string) model.Cl
 
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "Could not clone repository: %v", err)
-		return model.CloneResponse{Status: "Failed"}
+		return model.CloneResponse{Status: "Failed: " + err.Error()}
 	}
 	if repo != nil {
 		fmt.Printf("Cloned %s", name)

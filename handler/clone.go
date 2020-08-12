@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"github.com/mozaidk/sourceCloner/config"
-	"github.com/mozaidk/sourceCloner/service/provider"
+	"github.com/mozaidk/sourceCloner/service"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 	repoPath := config.ServiceConf.CloneDir + "/" + repoName
 	accessToken := r.FormValue("access_token")
 
-	result := provider.CloneRepository(repoURL, repoName, repoPath, accessToken)
+	result := service.CloneRepository(repoURL, repoName, repoPath, accessToken)
 
 	res, err := json.Marshal(result)
 

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"github.com/mozaidk/sourceCloner/service"
 	"github.com/mozaidk/sourceCloner/service/provider"
 	"html/template"
 	"net/http"
@@ -12,10 +13,18 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "index", nil)
 }
 
+func AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, service.AuthorizeURL(), http.StatusSeeOther)
+}
+
 func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 	ParseForm(w, r)
-	accessToken := r.FormValue("access_token")
+
+	// Get the access token.
+	accessToken := service.AccessToken(r.FormValue("code"))
+
 	repositoryList := provider.GetRepositories(accessToken)
+
 	renderTemplate(w, "welcome", repositoryList)
 }
 

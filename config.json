@@ -1,7 +1,7 @@
 {
-  "ClientId": "21562168ca87f2e900ef",
-  "ClientSecret": "a07b152b655155f9878f212114d6901cf20c5f5a",
-  "RedirectUri": "http://localhost:8080/oauth/redirect",
+  "ClientId": "a1945c1ddae1745e6c3d",
+  "ClientSecret": "34bded830aed766663bd1b5d17ba1a26faf70f9f",
+  "RedirectUri": "http://localhost:8080/welcome",
   "Scopes": [
     "read:user",
     "repo"

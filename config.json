@@ -1,7 +1,8 @@
 {
+  "Port": 8081,
   "ClientId": "a1945c1ddae1745e6c3d",
   "ClientSecret": "34bded830aed766663bd1b5d17ba1a26faf70f9f",
-  "RedirectUri": "http://localhost:8080/welcome",
+  "RedirectUri": "http://localhost:8081/welcome",
   "Scopes": [
     "read:user",
     "repo"

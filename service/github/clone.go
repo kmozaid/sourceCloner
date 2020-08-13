@@ -1,40 +1,19 @@
-package provider
+package github
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-git/go-git/v5"
 	githttp "github.com/go-git/go-git/v5/plumbing/transport/http"
-	"github.com/mozaidk/sourceCloner/config"
 	"github.com/mozaidk/sourceCloner/model"
-	"golang.org/x/net/context"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
 	"net/http"
 	"os"
 )
 
-var conf = &oauth2.Config{
-	ClientID:     config.ServiceConf.ClientId,
-	ClientSecret: config.ServiceConf.ClientSecret,
-	Endpoint:     github.Endpoint,
-	RedirectURL:  config.ServiceConf.RedirectUri,
-	Scopes:       config.ServiceConf.Scopes,
+type CloneService struct {
 }
 
-func AuthorizeURL() string {
-	return conf.AuthCodeURL("state")
-}
-
-func AccessToken(code string) string {
-	token, err := conf.Exchange(context.Background(), code)
-	if err != nil {
-		return ""
-	}
-	return token.AccessToken
-}
-
-func GetRepositories(accessToken string) model.RepositoryList {
+func (g CloneService) GetRepositories(accessToken string) model.RepositoryList {
 	reposReqURL := fmt.Sprintf("https://api.github.com/user/repos?access_token=%s", accessToken)
 	res, err := http.Get(reposReqURL)
 	if err != nil {
@@ -50,7 +29,7 @@ func GetRepositories(accessToken string) model.RepositoryList {
 	return model.RepositoryList{AccessToken: accessToken, Repositories: repos}
 }
 
-func CloneRepository(url string, name string, dir string, token string) model.CloneResponse {
+func (g CloneService) CloneRepository(url string, name string, dir string, token string) model.CloneResponse {
 	fmt.Printf("git clone %s %s \n", url, dir)
 	repo, err := git.PlainClone(dir, false, &git.CloneOptions{
 		Auth: &githttp.BasicAuth{

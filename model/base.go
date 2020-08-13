@@ -1,5 +1,14 @@
 package model
 
+type Config struct {
+	Port         int16
+	ClientId     string
+	ClientSecret string
+	RedirectUri  string
+	Scopes       []string
+	CloneDir     string
+}
+
 type User struct {
 	UserName string `json:"login"`
 	ReposUrl string `json:"repos_url"`

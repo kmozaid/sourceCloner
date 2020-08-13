@@ -56,7 +56,7 @@ func (g GitHubCloneService) cloneRepository(url string, name string, dir string,
 	return model.CloneResponse{Status: "Succeed"}
 }
 
-var cloneService = GitHubCloneService{}
+var cloneService CloneService = GitHubCloneService{}
 
 func GetRepositories(accessToken string) model.RepositoryList {
 	return cloneService.getRepositories(accessToken)

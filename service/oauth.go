@@ -28,7 +28,7 @@ func (g GitHubOAuthService) accessToken(code string) string {
 	return token.AccessToken
 }
 
-var gitHubOAuthService = GitHubOAuthService{
+var gitHubOAuthService OAuthService = GitHubOAuthService{
 	conf: oauth2.Config{
 		ClientID:     config.ServiceConf.ClientId,
 		ClientSecret: config.ServiceConf.ClientSecret,

@@ -17,6 +17,8 @@ func CloneHandler(w http.ResponseWriter, r *http.Request) {
 
 	result := service.CloneRepository(repoURL, repoName, repoPath, accessToken)
 
+	service.AuthorizeURL()
+
 	res, err := json.Marshal(result)
 
 	if err != nil {

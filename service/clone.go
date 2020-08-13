@@ -16,17 +16,17 @@ type CloneService interface {
 }
 
 type GitHubCloneService struct {
+	reposURL string
 }
 
 func (g GitHubCloneService) getRepositories(accessToken string) model.RepositoryList {
-	reposReqURL := fmt.Sprintf("https://api.github.com/user/repos?access_token=%s", accessToken)
+	reposReqURL := fmt.Sprintf(g.reposURL, accessToken)
 	res, err := http.Get(reposReqURL)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "could not create HTTP request: %v", err)
 	}
 	defer res.Body.Close()
 
-	// Parse the request body into the `OAuthAccessResponse` struct
 	var repos []model.Repository
 	if err := json.NewDecoder(res.Body).Decode(&repos); err != nil {
 		fmt.Fprintf(os.Stdout, "could not parse JSON response: %v", err)
@@ -38,7 +38,7 @@ func (g GitHubCloneService) cloneRepository(url string, name string, dir string,
 	fmt.Printf("git clone %s %s \n", url, dir)
 	repo, err := git.PlainClone(dir, false, &git.CloneOptions{
 		Auth: &githttp.BasicAuth{
-			Username: "something", // yes, this can be anything except an empty string
+			Username: "something", // can be anything but not empty.
 			Password: token,
 		},
 		URL:      url,
@@ -56,7 +56,7 @@ func (g GitHubCloneService) cloneRepository(url string, name string, dir string,
 	return model.CloneResponse{Status: "Succeed"}
 }
 
-var cloneService CloneService = GitHubCloneService{}
+var cloneService CloneService = GitHubCloneService{reposURL: "https://api.github.com/user/repos?access_token=%s"}
 
 func GetRepositories(accessToken string) model.RepositoryList {
 	return cloneService.getRepositories(accessToken)

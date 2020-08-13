@@ -19,7 +19,6 @@ func AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
 func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 	ParseForm(w, r)
 
-	// Get the access token.
 	accessToken := service.AccessToken(r.FormValue("code"))
 
 	repositoryList := service.GetRepositories(accessToken)
